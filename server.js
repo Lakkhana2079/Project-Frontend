@@ -16,6 +16,10 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.set('view engine', 'ejs'); // Replace 'ejs' with your actual view engine.
+app.set('views', __dirname + '/views'); // Specify the views directory.
+
+
 // Serve static files 
 app.use(express.static (__dirname + '/public')); 
 
