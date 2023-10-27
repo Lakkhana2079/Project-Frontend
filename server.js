@@ -1,25 +1,52 @@
 // Description: Node.js HTML client
 // requires: npm install express ejs axios body-parser
-
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const bodyParser = require('body-parser');
+var bodyParser = require('body-parser');
 
 // Base URL for the API
-const base_url = "http://localhost:3000"; // Update this to your API's base URL
+const base_url = "http://localhost:3000";
 
-// Set the template engine
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Serve static files
 app.use(express.static(__dirname + '/public'));
+
+// app.get("/", async (req, res) => {
+//   try {
+//     const response = await axios.get(base_url + '/books');
+//     res.render("books", { books: response.data });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send('Error');
+//   }
+// });
+
+// app.get("/", async (req, res) => {
+//     try {
+//       const response = await axios.get(base_url + '/all_data');
+//       res.render("books", { books: response.data });
+//     } catch (err) {
+//       console.error(err);
+//       res.status(500).send('Error');
+//     }
+//   });
+
+// app.get("/book/:id", async (req, res) => {
+//   try {
+//     const response = await axios.get(base_url + '/books/' + req.params.id);
+//     res.render("book", { book: response.data });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send('Error');
+//   }
+// });
 
 app.get("/", async (req, res) => {
   try {
-    const response = await axios.get(base_url + '/books');
+    const response = await axios.get(base_url + '/all_data') // เปลี่ยน '/books' เป็น '/all_data'
     res.render("books", { books: response.data });
   } catch (err) {
     console.error(err);
@@ -29,8 +56,8 @@ app.get("/", async (req, res) => {
 
 app.get("/book/:id", async (req, res) => {
   try {
-    const response = await axios.get(base_url + '/books/' + req.params.id);
-    res.render("book", { book: response.data });
+    const response = await axios.get(base_url + '/book/' + req.params.id);
+    res.render("book", { books: response.data });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error');
@@ -43,7 +70,12 @@ app.get("/create", (req, res) => {
 
 app.post("/create", async (req, res) => {
   try {
-    const data = { title: req.body.title, author: req.body.author };
+    const data = {
+      title: req.body.title,
+      borrowerName: req.body.borrowerName,
+      borrowDate: req.body.borrowDate,
+      returnDate: req.body.returnDate
+    };
     await axios.post(base_url + '/books', data);
     res.redirect("/");
   } catch (err) {
@@ -54,9 +86,7 @@ app.post("/create", async (req, res) => {
 
 app.get("/update/:id", async (req, res) => {
   try {
-    const response = await axios.get(
-      base_url + '/books/' + req.params.id
-    );
+    const response = await axios.get(base_url + '/books/' + req.params.id);
     res.render("update", { book: response.data });
   } catch (err) {
     console.error(err);
@@ -66,7 +96,12 @@ app.get("/update/:id", async (req, res) => {
 
 app.post("/update/:id", async (req, res) => {
   try {
-    const data = { title: req.body.title, author: req.body.author };
+    const data = {
+      title: req.body.title,
+      borrowerName: req.body.borrowerName,
+      borrowDate: req.body.borrowDate,
+      returnDate: req.body.returnDate
+    };
     await axios.put(base_url + '/books/' + req.params.id, data);
     res.redirect("/");
   } catch (err) {
@@ -84,6 +119,16 @@ app.get("/delete/:id", async (req, res) => {
     res.status(500).send('Error');
   }
 });
+
+app.get("/all_data/:id", async (req, res) => {
+    try {
+      const response = await axios.get(base_url + '/books/' + req.params.id);
+      res.render("all_data", { book: response.data });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error');
+    }
+  });
 
 app.listen(5500, () => {
   console.log('Server started on port 5500');

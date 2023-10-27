@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Update Book</title>
-    <link rel="stylesheet" href="../css/style.css"/>
+    <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
     <h1>Update Book</h1>
@@ -11,8 +11,15 @@
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" value="<%= book.title %>">
         <br>
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" value="<%= book.author %>">
+        <label for="borrowerName">Borrower Name:</label>
+        <input type="text" id="borrowerName" name="borrowerName" value="<%= book.borrower.name %>">
+        <br>
+        <label for="borrowDate">Borrow Date:</label>
+        <input type="date" id="borrowDate" name="borrowDate" value="<%= book.borrowingDate ? book.borrowingDate.borrow_date : '' %>">
+        <br>
+        <label for="returnDate">Return Date:</label>
+        <input type="date" id="returnDate" name="returnDate" value="<%= book.borrowingDate ? book.borrowingDate.return_date : '' %>">
+
         <br>
         <input type="submit" value="Update">
     </form>
@@ -21,4 +28,3 @@
     <a href="/">Back to List</a>
 </body>
 </html>
-
